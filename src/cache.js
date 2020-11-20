@@ -15,7 +15,16 @@ function drainTTLs() {
 }
 
 function tryItem(buf) {
-  const packet = dnsPacket.decode(buf);
+  let packet;
+
+  try {
+    packet = dnsPacket.decode(buf);
+  }
+  catch (err) {
+    console.error('packet decode error:', err.message);
+    throw new Error('packet decode failed');
+  }
+
   const existing = cache[packet.questions[0].name + packet.questions[0].type];
 
   if (!existing) {

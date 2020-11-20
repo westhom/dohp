@@ -24,7 +24,16 @@ const PORT = args['-p'] || 53535;
 const IP = args['-i'] || '0.0.0.0';
 
 dnsServer.on('message', (msg, rinfo) => {
-  const resp = cache.tryItem(msg);
+  let resp;
+
+  try {
+    resp = cache.tryItem(msg);
+  }
+  catch (err) {
+    console.error(err);
+    return;
+  }
+
 
   if (resp !== null) {
     dnsServer.send(resp, rinfo.port, rinfo.address);
