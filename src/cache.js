@@ -4,12 +4,15 @@ const cache = {};
 function drainTTLs() {
   for (key in cache) {
     const res = cache[key];
-    res.answers.forEach(ans => {
-      ans.ttl--;
-    });
 
-    if (res.answers[0].ttl <= 0) {
-      delete cache[key];
+    for (let i = 0; i < res.answers.length; i++) {
+      res.answers[i].ttl--;
+
+      // if any ttl in record drops below 0, delete from cache
+      if (res.answers[i].ttl <= 0) {
+        delete cache[key];
+        break;
+      }
     }
   }
 }
