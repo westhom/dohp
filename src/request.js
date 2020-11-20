@@ -2,15 +2,6 @@ const http2 = require('http2');
 const URL = require('url').URL;
 const services = require('./services.json');
 const args = require('./args.js');
-const dns = require('dns');
-
-// specifiy servers for bootstrapping purposes
-dns.setServers([
-  '1.1.1.1',
-  '1.0.0.1',
-  '8.8.8.8',
-  '8.8.4.4'
-]);
 
 const use_server = services[args['-s'] || 'mozilla-cloudflare'];
 const urlParsed = new URL(use_server);
