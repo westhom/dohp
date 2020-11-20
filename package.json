@@ -1,6 +1,6 @@
 {
   "name": "dohp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "No-frills DoH DNS proxy server.",
   "main": "main.js",
   "scripts": {},
