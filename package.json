@@ -1,0 +1,22 @@
+{
+  "name": "dohp",
+  "version": "1.0.0",
+  "description": "No-frills DoH DNS proxy server.",
+  "main": "main.js",
+  "scripts": {},
+  "keywords": [
+    "DoH",
+    "DNS",
+    "DNS proxy",
+    "DoH proxy",
+    "DNS over HTTPS",
+    "DNS-over-HTTPS"
+  ],
+  "bin": "./src/bin.js",
+  "author": "Wes Thom <westhom@icloud.com>",
+  "license": "MIT",
+  "dependencies": {
+    "arg": "^5.0.0",
+    "dns-packet": "^5.2.1"
+  }
+}
