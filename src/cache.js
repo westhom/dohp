@@ -38,6 +38,11 @@ function tryItem(buf) {
 
 function record(buf) {
   const packet = dnsPacket.decode(buf);
+
+  if (!packet.answers.length) {
+    return;
+  }
+
   cache[packet.questions[0].name + packet.questions[0].type] = packet;
 }
 
