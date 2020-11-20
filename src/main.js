@@ -46,7 +46,11 @@ dnsServer.on('message', (msg, rinfo) => {
       return;
     }
 
-    cache.record(resp);
+
+    if (resp.answers.length) {
+      cache.record(resp);
+    }
+
     dnsServer.send(resp, rinfo.port, rinfo.address);
   });
 });
