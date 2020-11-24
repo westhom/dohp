@@ -2,6 +2,7 @@ const dgram = require('dgram');
 const pkg = require('../package.json');
 const args = require('./args.js');
 const services = require('./services.json');
+const servFailError = require('./error.js');
 
 if (args['--version']) {
   console.log(pkg.version);
@@ -34,19 +35,35 @@ dnsServer.on('message', (msg, rinfo) => {
     return;
   }
 
-
+  // send cached response if available
   if (resp !== null) {
     dnsServer.send(resp, rinfo.port, rinfo.address);
     return;
   }
 
+  // make DoH request through upstream service
   request(msg, (err, resp) => {
-    if (err) {
-      console.error(err);
-      return;
+    let sendError = false;
+
+    if (err ) {
+      console.error('HTTP request error:', err.message);
+      sendError = true;
+    }
+    else {
+      try {
+        cache.record(resp);
+      }
+      catch(err){
+        console.error('caught error while recording response:', err.message);
+        sendError = true;
+      }
     }
 
-    cache.record(resp);
+    if( sendError ){
+      const epacket = servFailError(msg);
+      return dnsServer.send(epacket, rinfo.port, rinfo.address);
+    }
+
     dnsServer.send(resp, rinfo.port, rinfo.address);
   });
 });

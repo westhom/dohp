@@ -40,7 +40,9 @@ function tryItem(buf) {
 }
 
 function record(buf) {
-  const packet = dnsPacket.decode(buf);
+  let packet;
+
+  packet = dnsPacket.decode(buf);
 
   if (!packet.answers.length) {
     return;

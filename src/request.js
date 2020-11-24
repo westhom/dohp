@@ -44,15 +44,25 @@ function request(msg, callback) {
 
   const req = http2Client.request(headers);
   const data = [];
+  let err = null;
 
   req.on('data', chunk => {
     data.push(chunk);
   });
 
+  req.on('response', headers => {
+    if( headers[':status'] !== 200 ){
+      err = new Error('non-200 status returned by upstream service');
+    }
+    else if( headers['content-type'] !== 'application/dns-message' ){
+      err = new Error('upstream response content-type not DNS message');
+    }
+  });
+
   req.on('error', callback);
 
   req.on('end', () => {
-    callback(null, Buffer.concat(data));
+    callback(err, Buffer.concat(data));
   });
 
   req.end(msg);
