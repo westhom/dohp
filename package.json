@@ -18,5 +18,7 @@
   "dependencies": {
     "arg": "^5.0.0",
     "dns-packet": "^5.2.1"
-  }
+  },
+  "repository": "git@github.com:westhom/dohp.git",
+  "homepage": "https://github.com/westhom/dohp#readme"
 }
