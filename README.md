@@ -18,6 +18,7 @@ $ npm install -g dohp
 $ dohp --help
 usage:
   dohp [-p <port>] [-i <bind IP>] [-s <DoH service>]
+  dohp [-p <port>] [-i <bind IP>] [-u <custom DoH service URL>]
 
 service options:
   mozilla-cloudflare
