@@ -3,8 +3,16 @@ const URL = require('url').URL;
 const services = require('./services.json');
 const args = require('./args.js');
 
-const use_server = services[args['-s'] || 'mozilla-cloudflare'];
-const urlParsed = new URL(use_server);
+const use_server = args['-u'] || services[args['-s'] || 'mozilla-cloudflare'];
+let urlParsed;
+
+try {
+  urlParsed = new URL(use_server);
+}
+catch(err){
+  console.error('error while parsing URL:', err.message);
+  process.exit(1);
+}
 
 const headers = {
   ':path': urlParsed.pathname,

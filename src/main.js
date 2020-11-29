@@ -11,6 +11,7 @@ if (args['--version']) {
 
 if (args['--help']) {
   console.log('usage:\n  dohp [-p <port>] [-i <bind IP>] [-s <DoH service>]');
+  console.log('  dohp [-p <port>] [-i <bind IP>] [-u <DoH custom service URL>]')
   console.log();
   console.log('service options:\n  ' + Object.keys(services).join('\n  '));
   process.exit();

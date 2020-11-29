@@ -5,5 +5,6 @@ module.exports = arg({
   '--version': Boolean,
   '-p': Number,
   '-i': String,
-  '-s': String
+  '-s': String,
+  '-u': String
 });
