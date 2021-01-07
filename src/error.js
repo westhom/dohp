@@ -1,3 +1,5 @@
+const dnsPacket = require('dns-packet');
+
 // from: https://github.com/commonshost/dohnut/blob/a27afb50f12f63caf3a9ddfb81ae8b6d89badab0/source/worker.js#L40
 function dnsErrorServFail (query) {
   const { questions, flags, id } = dnsPacket.decode(query)
