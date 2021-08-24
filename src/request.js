@@ -6,6 +6,8 @@ const args = require('./args.js');
 const use_server = args['-u'] || services[args['-s'] || 'mozilla-cloudflare'];
 let urlParsed;
 
+let connected = false;
+
 try {
   urlParsed = new URL(use_server);
 }
@@ -29,14 +31,22 @@ function connect() {
 
   http2Client.on('connect', () => {
     console.log('Connected to upstream service', use_server);
+    connected = true;
   });
 
   http2Client.on('error', err => {
     console.error(`HTTPS client error: ${err.message}`);
   });
 
+  http2Client.on('goaway', () => {
+    console.warn("HTTPS client received `goaway` event; destroying session");
+    connected = false;
+    http2Client.destroy();
+  });
+
   http2Client.on('close', () => {
     console.error('Disconnected from upstream service');
+    connected = false;
     connect();
   });
 }
@@ -48,6 +58,10 @@ connect();
 // });
 
 function request(msg, callback) {
+  if( !connected ){
+    return callback(new Error('not connected to service'), Buffer.concat([]));
+  }
+
   headers["content-length"] = msg.length;
 
   const req = http2Client.request(headers);
